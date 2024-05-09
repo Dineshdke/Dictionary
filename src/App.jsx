@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
@@ -17,20 +17,14 @@ function App() {
   function handleChange(e) {
     setRes({...res,['yes']:'',['no']:''});
     let { value } = e.target;
-    let ans = value.toLowerCase();
-    setSearch(ans);
+    setSearch(value);
   }
 
 
   function wordSearch(value){
     console.log(value)
     let found = dict.filter((item)=>{
-      // console.log(item.word.toLocaleLowerCase())
-      return (item.word.toLocaleLowerCase() == value)
-      // {
-      //   setRes({...res,['yes']:item.meaning,['no']:''}); 
-      //   setYes(true);        
-      // }
+      return (item.word.toLocaleLowerCase() == value.toLocaleLowerCase())
     })
     if(found.length>0){
       setRes({...res,['yes']:found[0].meaning,['no']:''});
@@ -39,11 +33,6 @@ function App() {
       setRes({...res,['no']:'Word not found in the dictionary.',['yes']:''})  
     }
   }
-
-  // useEffect(()=>{
-  //   wordSearch(search)
-  // },[search]);
-  
 
   return (
     <>
@@ -58,9 +47,8 @@ function App() {
         console.log(search)
         return wordSearch(search)}}>Search</button>
       <h3>Definition:</h3>
-      {search&&res.yes}
-      {search&&res.no}
-      {/* {no&&'Word not found in the dictionary.'} */}
+      <div>{search&&res.yes}</div>
+      <div>{search&&res.no}</div>      
     </>
   );
 }
