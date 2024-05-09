@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   const [search, setSearch] = useState("");
   const [res, setRes] = useState({ yes: "", no: "" });
-  const [edgecase, setEdgeCase] = useState(false);
+  const [edgecase, setEdgeCase] = useState(true);
 
   const dict = [
     {
@@ -16,15 +16,15 @@ function App() {
   ];
 
   function handleChange(e) {
-    setEdgeCase(false);
     setRes({ ...res, ["yes"]: "", ["no"]: "" });
+    setEdgeCase(true);
     let { value } = e.target;
     setSearch(value);
   }
 
   function wordSearch(value) {
     if (search == "") {
-      setEdgeCase(true);
+      setEdgeCase(false);
     } else {
       setEdgeCase(false);
       let found = dict.filter((item) => {
@@ -32,12 +32,14 @@ function App() {
       });
       if (found.length > 0) {
         setRes({ ...res, ["yes"]: found[0].meaning, ["no"]: "" });
+        setEdgeCase(true);
       } else {
         setRes({
           ...res,
           ["no"]: "Word not found in the dictionary.",
           ["yes"]: "",
         });
+        setEdgeCase(false);
       }
     }
   }
@@ -60,9 +62,7 @@ function App() {
         Search
       </button>
       <h3>Definition:</h3>
-      <div>{search && res.yes}</div>
-      <div>{search && res.no}</div>
-      <div>{edgecase && 'Word not found in the dictionary.'}</div>
+      <div>{edgecase ? res.yes : 'Word not found in the dictionary.'}</div>
     </>
   );
 }
